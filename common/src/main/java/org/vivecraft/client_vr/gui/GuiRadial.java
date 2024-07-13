@@ -5,7 +5,9 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
+import org.vivecraft.client.VivecraftVRMod;
 import org.vivecraft.client.gui.framework.TwoHandedScreen;
+import org.vivecraft.client_vr.ClientDataHolderVR;
 import org.vivecraft.client_vr.provider.MCVR;
 import org.vivecraft.client_vr.provider.openvr_lwjgl.VRInputAction;
 
@@ -42,6 +44,15 @@ public class GuiRadial extends TwoHandedScreen {
 
             if (keymapping != null) {
                 label = I18n.get(keymapping.getName());
+                for (int j = 0; j < VivecraftVRMod.INSTANCE.keyQuickCommands.length; j++) {
+                    if (keymapping.equals(VivecraftVRMod.INSTANCE.keyQuickCommands[j])) {
+                        String command = ClientDataHolderVR.getInstance().vrSettings.vrQuickCommands[j];
+                        if (!command.isEmpty()) {
+                            label = command;
+                        }
+                        break;
+                    }
+                }
             }
 
             int buttonWidth = Math.max(buttonWidthMin, this.font.width(label));

@@ -7,9 +7,11 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import org.apache.commons.lang3.ArrayUtils;
+import org.vivecraft.client.VivecraftVRMod;
 import org.vivecraft.client.gui.framework.GuiVROptionButton;
 import org.vivecraft.client.gui.framework.GuiVROptionsBase;
 import org.vivecraft.client.gui.framework.VROptionLayout;
+import org.vivecraft.client_vr.ClientDataHolderVR;
 import org.vivecraft.client_vr.settings.VRSettings;
 
 public class GuiRadialConfiguration extends GuiVROptionsBase {
@@ -112,6 +114,15 @@ public class GuiRadialConfiguration extends GuiVROptionsBase {
 
                 if (keymapping != null) {
                     label = I18n.get(keymapping.getName());
+                    for (int j = 0; j < VivecraftVRMod.INSTANCE.keyQuickCommands.length; j++) {
+                        if (keymapping.equals(VivecraftVRMod.INSTANCE.keyQuickCommands[j])) {
+                            String command = ClientDataHolderVR.getInstance().vrSettings.vrQuickCommands[j];
+                            if (!command.isEmpty()) {
+                                label = command;
+                            }
+                            break;
+                        }
+                    }
                 }
 
                 int buttonWidth = Math.max(buttonWidthMin, this.font.width(label));

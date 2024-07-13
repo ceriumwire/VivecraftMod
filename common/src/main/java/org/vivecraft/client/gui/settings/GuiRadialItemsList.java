@@ -8,6 +8,8 @@ import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import org.apache.commons.lang3.ArrayUtils;
+import org.vivecraft.client.VivecraftVRMod;
+import org.vivecraft.client_vr.ClientDataHolderVR;
 
 import java.util.Arrays;
 
@@ -77,7 +79,18 @@ public class GuiRadialItemsList extends ObjectSelectionList<GuiRadialItemsList.B
                 chatformatting = ChatFormatting.GREEN;
             }
 
-            guiGraphics.drawString(minecraft.font, chatformatting + I18n.get(this.myKey.getName()),
+            String label = I18n.get(this.myKey.getName());
+            for (int i = 0; i < VivecraftVRMod.INSTANCE.keyQuickCommands.length; i++) {
+                if (myKey.equals(VivecraftVRMod.INSTANCE.keyQuickCommands[i])) {
+                    String command = ClientDataHolderVR.getInstance().vrSettings.vrQuickCommands[i];
+                    if (!command.isEmpty()) {
+                        label = label + ": " + command;
+                    }
+                    break;
+                }
+            }
+
+            guiGraphics.drawString(minecraft.font, chatformatting + label,
                 (minecraft.screen.width / 2 - maxListLabelWidth / 2), (pTop + pHeight / 2 - 9 / 2), 16777215);
         }
 
