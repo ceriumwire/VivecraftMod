@@ -328,7 +328,7 @@ public abstract class MCVR {
 
     public void resetPosition() {
         Vec3 vec3 = this.getCenterEyePosition().scale(-1.0D).add(this.dh.vrSettings.originOffset.getX(), this.dh.vrSettings.originOffset.getY(), this.dh.vrSettings.originOffset.getZ());
-        this.dh.vrSettings.originOffset = new Vector3((float) vec3.x, (float) vec3.y + 1.62F, (float) vec3.z);
+        this.dh.vrSettings.originOffset = new Vector3((float) vec3.x, (float) vec3.y + 1.62F / dh.vrPlayer.worldScale, (float) vec3.z);
     }
 
     public void clearOffset() {
