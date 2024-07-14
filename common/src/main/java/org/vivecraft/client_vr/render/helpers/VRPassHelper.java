@@ -180,7 +180,7 @@ public class VRPassHelper {
 
             if (dataHolder.pumpkineffect > 0.0F) {
                 VRShaders._FOVReduction_RadiusUniform.set(0.3F);
-                VRShaders._FOVReduction_BorderUniform.set(0.0F);
+                VRShaders._FOVReduction_BorderUniform.set(0.15F);
             } else {
                 VRShaders._FOVReduction_RadiusUniform.set(fovReduction);
                 VRShaders._FOVReduction_BorderUniform.set(0.06F);
