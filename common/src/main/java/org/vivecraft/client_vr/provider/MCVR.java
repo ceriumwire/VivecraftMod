@@ -860,10 +860,9 @@ public abstract class MCVR {
 
             if (this.dh.vrSettings.worldRotationIncrement == 0.0F) {
                 float f4 = this.getInputAction(mod.keyRotateAxis).getAxis2DUseTracked().getX();
-
-                if (f4 == 0.0F) {
-                    f4 = this.getInputAction(mod.keyFreeMoveRotate).getAxis2DUseTracked().getX();
-                }
+                f4 += this.getInputAction(mod.keyFreeMoveRotate).getAxis2DUseTracked().getX();
+                f4 -= VivecraftMovementInput.getMovementAxisValue(mod.keyRotateLeft);
+                f4 += VivecraftMovementInput.getMovementAxisValue(mod.keyRotateRight);
 
                 if (f4 != 0.0F) {
                     float f8 = 10.0F * f4;
@@ -883,38 +882,12 @@ public abstract class MCVR {
                 }
             }
 
-            if (this.dh.vrSettings.worldRotationIncrement == 0.0F) {
-                float f6 = VivecraftMovementInput.getMovementAxisValue(mod.keyRotateLeft);
-
-                if (f6 > 0.0F) {
-                    float f9 = 5.0F;
-
-                    if (f6 > 0.0F) {
-                        f9 = 10.0F * f6;
-                    }
-
-                    this.dh.vrSettings.worldRotation += f9;
-                    this.dh.vrSettings.worldRotation %= 360.0F;
-                }
-            } else if (mod.keyRotateLeft.consumeClick()) {
+            if (this.dh.vrSettings.worldRotationIncrement != 0.0F && mod.keyRotateLeft.consumeClick()) {
                 this.dh.vrSettings.worldRotation += this.dh.vrSettings.worldRotationIncrement;
                 this.dh.vrSettings.worldRotation %= 360.0F;
             }
 
-            if (this.dh.vrSettings.worldRotationIncrement == 0.0F) {
-                float f7 = VivecraftMovementInput.getMovementAxisValue(mod.keyRotateRight);
-
-                if (f7 > 0.0F) {
-                    float f10 = 5.0F;
-
-                    if (f7 > 0.0F) {
-                        f10 = 10.0F * f7;
-                    }
-
-                    this.dh.vrSettings.worldRotation -= f10;
-                    this.dh.vrSettings.worldRotation %= 360.0F;
-                }
-            } else if (mod.keyRotateRight.consumeClick()) {
+            if (this.dh.vrSettings.worldRotationIncrement != 0.0F && mod.keyRotateRight.consumeClick()) {
                 this.dh.vrSettings.worldRotation -= this.dh.vrSettings.worldRotationIncrement;
                 this.dh.vrSettings.worldRotation %= 360.0F;
             }
