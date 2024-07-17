@@ -109,6 +109,7 @@ public abstract class MCVR {
     protected Map<String, VRInputAction> inputActions = new HashMap<>();
     protected Map<String, VRInputAction> inputActionsByKeyBinding = new HashMap<>();
     private int holdStartHotbar = 0;
+    private int holdStartRotate = 0;
 
     public MCVR(Minecraft mc, ClientDataHolderVR dh, VivecraftVRMod vrMod) {
         this.mc = mc;
@@ -869,27 +870,45 @@ public abstract class MCVR {
                     this.dh.vrSettings.worldRotation -= f8;
                     this.dh.vrSettings.worldRotation %= 360.0F;
                 }
-            } else if (mod.keyRotateAxis.consumeClick() || mod.keyFreeMoveRotate.consumeClick()) {
-                float f5 = this.getInputAction(mod.keyRotateAxis).getAxis2D(false).getX();
+            } else {
+                int dir = 0;
+                Set<KeyMapping> hapticKeys = new HashSet<>();
 
-                if (f5 == 0.0F) {
-                    f5 = this.getInputAction(mod.keyFreeMoveRotate).getAxis2D(false).getX();
+                KeyMapping[] keys = {mod.keyRotateAxis, mod.keyFreeMoveRotate};
+                float threshold = 0.5F;
+                for (KeyMapping key : keys) {
+                    float value = this.getInputAction(key).getAxis2D(false).getX();
+                    if (Math.abs(value) > threshold) {
+                        dir += (int) Math.signum(value);
+                        hapticKeys.add(key);
+                    }
+                }
+                if (mod.keyRotateLeft.isDown()) {
+                    dir -= 1;
+                    hapticKeys.add(mod.keyRotateLeft);
+                }
+                if (mod.keyRotateRight.isDown()) {
+                    dir += 1;
+                    hapticKeys.add(mod.keyRotateRight);
                 }
 
-                if (Math.abs(f5) > 0.5F) {
-                    this.dh.vrSettings.worldRotation -= this.dh.vrSettings.worldRotationIncrement * Math.signum(f5);
-                    this.dh.vrSettings.worldRotation %= 360.0F;
+                dir = Mth.clamp(dir, -1, 1);
+
+                if (dir != 0) {
+                    if (holdStartRotate == -1) {
+                        holdStartRotate = dh.tickCounter;
+                    }
+                    int holdDuration = dh.tickCounter - holdStartRotate;
+                    if (holdDuration % 4 == 0) {
+                        this.dh.vrSettings.worldRotation -= this.dh.vrSettings.worldRotationIncrement * dir;
+                        this.dh.vrSettings.worldRotation %= 360.0F;
+                        for (KeyMapping key : hapticKeys) {
+                            this.triggerHapticPulse(this.findActiveBindingControllerType(key), 0.001F, 160, 0.25F);
+                        }
+                    }
+                } else {
+                    holdStartRotate = -1;
                 }
-            }
-
-            if (this.dh.vrSettings.worldRotationIncrement != 0.0F && mod.keyRotateLeft.consumeClick()) {
-                this.dh.vrSettings.worldRotation += this.dh.vrSettings.worldRotationIncrement;
-                this.dh.vrSettings.worldRotation %= 360.0F;
-            }
-
-            if (this.dh.vrSettings.worldRotationIncrement != 0.0F && mod.keyRotateRight.consumeClick()) {
-                this.dh.vrSettings.worldRotation -= this.dh.vrSettings.worldRotationIncrement;
-                this.dh.vrSettings.worldRotation %= 360.0F;
             }
 
             this.seatedRot = this.dh.vrSettings.worldRotation;
