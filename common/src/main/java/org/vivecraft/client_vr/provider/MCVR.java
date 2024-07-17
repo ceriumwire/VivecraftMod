@@ -108,6 +108,7 @@ public abstract class MCVR {
     protected int quickTorchPreviousSlot;
     protected Map<String, VRInputAction> inputActions = new HashMap<>();
     protected Map<String, VRInputAction> inputActionsByKeyBinding = new HashMap<>();
+    private int holdStartHotbar = 0;
 
     public MCVR(Minecraft mc, ClientDataHolderVR dh, VivecraftVRMod vrMod) {
         this.mc = mc;
@@ -811,14 +812,23 @@ public abstract class MCVR {
                 }
             }
 
-            if (mod.keyHotbarNext.consumeClick()) {
-                this.changeHotbar(-1);
-                this.triggerBindingHapticPulse(mod.keyHotbarNext, 250);
-            }
-
-            if (mod.keyHotbarPrev.consumeClick()) {
-                this.changeHotbar(1);
-                this.triggerBindingHapticPulse(mod.keyHotbarPrev, 250);
+            if (mod.keyHotbarNext.isDown() ^ mod.keyHotbarPrev.isDown()) {
+                KeyMapping key = mod.keyHotbarNext.isDown() ? mod.keyHotbarNext : mod.keyHotbarPrev;
+                int dir = mod.keyHotbarNext.isDown() ? -1 : 1;
+                int repeatStart = 8;
+                int repeatInterval = 3;
+                if (holdStartHotbar == -1) {
+                    holdStartHotbar = dh.tickCounter;
+                }
+                int holdDuration = dh.tickCounter - holdStartHotbar;
+                if (holdDuration == 0 ||
+                    (holdDuration >= repeatStart &&
+                    (holdDuration - repeatStart) % repeatInterval == 0)) {
+                    this.changeHotbar(dir);
+                    this.triggerBindingHapticPulse(key, 250);
+                }
+            } else {
+                holdStartHotbar = -1;
             }
 
             if (mod.keyQuickTorch.consumeClick() && this.mc.player != null) {
