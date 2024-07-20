@@ -277,57 +277,59 @@ public class VREffectsHelper {
 
         poseStack.popPose();
 
-        Vector2f area = dataHolder.vr.getPlayAreaSize();
-        if (area == null) {
-            area = new Vector2f(2, 2);
-        }
-        for (int i = 0; i < 2; i++) {
-            float width = area.x + i * 2;
-            float length = area.y + i * 2;
-
-            poseStack.pushPose();
-            RenderSystem.setShader(GameRenderer::getPositionTexColorNormalShader);
-
-            int r, g, b;
-            if (i == 0) {
-                RenderSystem.setShaderTexture(0, grass);
-                // plains grass color, but a bit darker
-                r = 114;
-                g = 148;
-                b = 70;
-            } else {
-                RenderSystem.setShaderTexture(0, dirt);
-                r = g = b = 128;
+        if (dataHolder.vrSettings.menuWorldPanoramaFloor) {
+            Vector2f area = dataHolder.vr.getPlayAreaSize();
+            if (area == null) {
+                area = new Vector2f(2, 2);
             }
-            Matrix4f matrix4f = poseStack.last().pose();
-            bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR_NORMAL);
-            poseStack.translate(-width / 2.0F, 0.0F, -length / 2.0F);
+            for (int i = 0; i < 2; i++) {
+                float width = area.x + i * 2;
+                float length = area.y + i * 2;
 
-            final int repeat = 4; // texture wraps per meter
+                poseStack.pushPose();
+                RenderSystem.setShader(GameRenderer::getPositionTexColorNormalShader);
 
-            bufferbuilder
-                .vertex(matrix4f, 0, 0.005f * -i, 0)
-                .uv(0, 0)
-                .color(r, g, b, 255)
-                .normal(0, 1, 0).endVertex();
-            bufferbuilder
-                .vertex(matrix4f, 0, 0.005f * -i, length)
-                .uv(0, repeat * length)
-                .color(r, g, b, 255)
-                .normal(0, 1, 0).endVertex();
-            bufferbuilder
-                .vertex(matrix4f, width, 0.005f * -i, length)
-                .uv(repeat * width, repeat * length)
-                .color(r, g, b, 255)
-                .normal(0, 1, 0).endVertex();
-            bufferbuilder
-                .vertex(matrix4f, width, 0.005f * -i, 0)
-                .uv(repeat * width, 0)
-                .color(r, g, b, 255)
-                .normal(0, 1, 0).endVertex();
+                int r, g, b;
+                if (i == 0) {
+                    RenderSystem.setShaderTexture(0, grass);
+                    // plains grass color, but a bit darker
+                    r = 114;
+                    g = 148;
+                    b = 70;
+                } else {
+                    RenderSystem.setShaderTexture(0, dirt);
+                    r = g = b = 128;
+                }
+                Matrix4f matrix4f = poseStack.last().pose();
+                bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR_NORMAL);
+                poseStack.translate(-width / 2.0F, 0.0F, -length / 2.0F);
 
-            BufferUploader.drawWithShader(bufferbuilder.end());
-            poseStack.popPose();
+                final int repeat = 4; // texture wraps per meter
+
+                bufferbuilder
+                    .vertex(matrix4f, 0, 0.005f * -i, 0)
+                    .uv(0, 0)
+                    .color(r, g, b, 255)
+                    .normal(0, 1, 0).endVertex();
+                bufferbuilder
+                    .vertex(matrix4f, 0, 0.005f * -i, length)
+                    .uv(0, repeat * length)
+                    .color(r, g, b, 255)
+                    .normal(0, 1, 0).endVertex();
+                bufferbuilder
+                    .vertex(matrix4f, width, 0.005f * -i, length)
+                    .uv(repeat * width, repeat * length)
+                    .color(r, g, b, 255)
+                    .normal(0, 1, 0).endVertex();
+                bufferbuilder
+                    .vertex(matrix4f, width, 0.005f * -i, 0)
+                    .uv(repeat * width, 0)
+                    .color(r, g, b, 255)
+                    .normal(0, 1, 0).endVertex();
+
+                BufferUploader.drawWithShader(bufferbuilder.end());
+                poseStack.popPose();
+            }
         }
     }
 

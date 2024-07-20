@@ -333,6 +333,8 @@ public class VRSettings {
     public MenuWorld menuWorldSelection = MenuWorld.BOTH;
     @SettingField(VrOptions.MENU_WORLD_FALLBACK)
     public boolean menuWorldFallbackPanorama = true;
+    @SettingField(VrOptions.MENU_WORLD_PANORAMA_FLOOR)
+    public boolean menuWorldPanoramaFloor = true;
     //
 
     //Mixed Reality
@@ -1744,6 +1746,7 @@ public class VRSettings {
             }
         },
         MENU_WORLD_FALLBACK(false, true, "vivecraft.options.menuworldfallback.panorama", "vivecraft.options.menuworldfallback.dirtbox"), // fallback for when menurwold is not shown
+        MENU_WORLD_PANORAMA_FLOOR(false, true),
         HRTF_SELECTION(false, false) { // HRTF
 
             // this is now handled by vanilla
