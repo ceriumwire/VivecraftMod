@@ -418,8 +418,10 @@
   "vivecraft.messages.gcinfo": "Your current garbage collector is %s, which is not optimal for Vivecraft and will likely cause hitching and framerate drops.\n\nYour system appears sufficient to use %s and %s GB or more of heap memory, which is recommended for the smoothest experience. Add %s to your Java arguments to use it.\n\nIf you're unsure how to modify your Java arguments, press \"%s\" below.",
 
   "_comment_m": "mixin version exclusive strings",
-  "vivecraft.options.screen.settings": "Vivecraft Settings",
-  "vivecraft.options.screen.server": "Vivecraft Server Settings",
+  "vivecraft.options.screen.mod": "Mod Settings",
+  "vivecraft.options.screen.server": "Server Settings",
+  "vivecraft.options.screen.mod.button": "Mod Settings...",
+  "vivecraft.options.screen.server.button": "Server Settings...",
   "_comment_m0": "Option values",
   "vivecraft.options.shaderguirender.aftershader": "After Shader",
   "vivecraft.options.shaderguirender.aftertranslucent": "Translucent",
