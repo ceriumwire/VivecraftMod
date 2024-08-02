@@ -506,6 +506,8 @@
 
   "vivecraft.gui.update": "§aⓘ§r Update",
   "vivecraft.gui.vr": "VR: %s",
+  "vivecraft.gui.previouspage": "Previous Page",
+  "vivecraft.gui.nextpage": "Next Page",
 
   "vivecraft.toasts.move1": "Move with %s",
   "vivecraft.toasts.move2": "Move with %s and %s",

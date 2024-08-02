@@ -33,6 +33,8 @@ public abstract class GuiVROptionsBase extends Screen {
     public String vrTitle = "Title";
     private Button btnDone;
     private Button btnDefaults;
+    protected int currentPage = 0;
+    protected int totalPages = 1;
 
     public GuiVROptionsBase(Screen lastScreen) {
         super(Component.literal(""));
@@ -63,6 +65,39 @@ public abstract class GuiVROptionsBase extends Screen {
             .pos(this.width / 2 - 155, this.height - 30)
             .size(150, 20)
             .build());
+        if (totalPages > 1 && currentPage > 0) {
+            this.addRenderableWidget(new Button.Builder(Component.translatable("vivecraft.gui.previouspage"), (p) ->
+            {
+                if (currentPage > 0) {
+                    currentPage--;
+                    this.reinit = true;
+                }
+            })
+                .pos(this.width / 2 - 155, this.height - 51)
+                .size(150, 20)
+                .build());
+        }
+        if (totalPages > 1 && currentPage < totalPages - 1) {
+            this.addRenderableWidget(new Button.Builder(Component.translatable("vivecraft.gui.nextpage"), (p) ->
+            {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    this.reinit = true;
+                }
+            })
+                .pos(this.width / 2 + 5, this.height - 51)
+                .size(150, 20)
+                .build());
+        }
+    }
+
+    protected void setTotalPages(int totalPages) {
+        if (totalPages >= 1 && totalPages < Integer.MAX_VALUE) {
+            this.totalPages = totalPages;
+            this.reinit = true;
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     protected boolean onDoneClicked() {
