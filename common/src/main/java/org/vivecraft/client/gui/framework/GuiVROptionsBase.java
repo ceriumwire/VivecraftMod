@@ -11,6 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.phys.Vec2;
+import org.vivecraft.client.gui.settings.GuiLoadDefaultsConfirm;
 import org.vivecraft.client_vr.ClientDataHolderVR;
 import org.vivecraft.client_vr.ScreenUtils;
 import org.vivecraft.client_vr.settings.VRSettings;
@@ -52,9 +53,12 @@ public abstract class GuiVROptionsBase extends Screen {
             .build());
         this.addRenderableWidget(this.btnDefaults = new Button.Builder(Component.translatable("vivecraft.gui.loaddefaults"), (p) ->
         {
-            this.loadDefaults();
-            this.dataholder.vrSettings.saveOptions();
-            this.reinit = true;
+            GuiLoadDefaultsConfirm guiLoadDefaultsConfirm = new GuiLoadDefaultsConfirm(this);
+            guiLoadDefaultsConfirm.loadDefaultsRunnables = new Runnable[]{
+                this::loadDefaults,
+                this.dataholder.vrSettings::saveOptions
+            };
+            this.minecraft.setScreen(guiLoadDefaultsConfirm);
         })
             .pos(this.width / 2 - 155, this.height - 30)
             .size(150, 20)

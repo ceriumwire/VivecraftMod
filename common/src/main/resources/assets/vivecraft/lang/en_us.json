@@ -495,6 +495,7 @@
   "vivecraft.messages.stencil": "[Vivecraft] A different mod uses the stencil buffer, if you run into weird rendering issues, try disabling the Eye Stencil in: %s\nYou can disable this message in: %s",
   "vivecraft.messages.3options": "%s > %s > %s",
   "vivecraft.messages.openSettings": "Click to open settings",
+  "vivecraft.messages.loaddefaultsconfirm": "Resets all settings on this page to their default values. Continue?",
   "vivecraft.message.kofi": "Support us on Ko-Fi",
   "vivecraft.message.overriddenbyserver": "§6Setting overridden by server.§r\n",
   "vivecraft.message.limitedbyserver": "§6Setting range limited by server (%s - %s)§r\n",
