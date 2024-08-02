@@ -419,8 +419,10 @@
 
   "_comment_m": "mixin version exclusive strings",
   "vivecraft.options.screen.mod": "Mod Settings",
+  "vivecraft.options.screen.misc": "Miscellaneous Settings",
   "vivecraft.options.screen.server": "Server Settings",
   "vivecraft.options.screen.mod.button": "Mod Settings...",
+  "vivecraft.options.screen.misc.button": "Miscellaneous Settings...",
   "vivecraft.options.screen.server.button": "Server Settings...",
   "_comment_m0": "Option values",
   "vivecraft.options.shaderguirender.aftershader": "After Shader",
